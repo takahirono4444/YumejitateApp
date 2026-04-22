@@ -1,0 +1,8 @@
+C:\Users\yumejitate\Desktop\YumejitateApp\YumejitateApp\bin\x86\YumejitateApp.exe.config
+C:\Users\yumejitate\Desktop\YumejitateApp\YumejitateApp\bin\x86\YumejitateApp.exe
+C:\Users\yumejitate\Desktop\YumejitateApp\YumejitateApp\obj\x86\YumejitateApp.csproj.AssemblyReference.cache
+C:\Users\yumejitate\Desktop\YumejitateApp\YumejitateApp\obj\x86\YumejitateApp.Properties.Resources.resources
+C:\Users\yumejitate\Desktop\YumejitateApp\YumejitateApp\obj\x86\YumejitateApp.csproj.GenerateResource.cache
+C:\Users\yumejitate\Desktop\YumejitateApp\YumejitateApp\obj\x86\YumejitateApp.csproj.CoreCompileInputs.cache
+C:\Users\yumejitate\Desktop\YumejitateApp\YumejitateApp\obj\x86\YumejitateApp.exe
+C:\Users\yumejitate\Desktop\YumejitateApp\YumejitateApp\obj\x86\YumejitateApp.Form1.resources
