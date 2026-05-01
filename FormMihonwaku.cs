@@ -401,6 +401,8 @@ namespace YumejitateApp
                 string strsql = "SELECT * FROM [見本枠検索テーブル] WHERE " +
                                 baseWhere + sizeWhere + ringsizeWhere;
 
+               
+
                 // --- 1回目の検索（精度高め） ---
                 var dt = AppState.Db.ExecuteQuery(strsql);
                 if (dt.Rows.Count == 0)
@@ -424,6 +426,7 @@ namespace YumejitateApp
                     }
                 }
 
+                
                 // --- ワーク検索テーブルへ挿入 ---
                 string insertSql = "INSERT INTO [ワーク検索テーブル] " + strsql.Replace("SELECT *", "SELECT *");
                 // Access SQL: INSERT INTO table SELECT * FROM table WHERE ...
@@ -677,10 +680,11 @@ namespace YumejitateApp
         {
             if (_cmbItem.Text != "リング") return "";
 
-            int mSize = _cmbRingsizeJuu.SelectedIndex * 10 + _cmbRingsizeIchi.SelectedIndex;
-            // VB6: val(w) はフィールド[w]の文字列を数値変換
-            // Access では Val() 関数は非標準のため、数値比較に変換
-            return "AND (" + mSize + " >= Val([w]) AND " + mSize + " <= Val([x])) ";
+            int mSize = _cmbRingsizeJuu.SelectedIndex * 10
+                      + _cmbRingsizeIchi.SelectedIndex;
+
+            // w,xはVARCHAR型のためCLng()で数値変換して比較
+            return "AND (CLng([w]) <= " + mSize + " AND CLng([x]) >= " + mSize + ") ";
         }
 
         // ================================================================
