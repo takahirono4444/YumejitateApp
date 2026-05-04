@@ -114,18 +114,24 @@ namespace YumejitateApp
 
             // --- サイズ（上辺） ---
             AddLabel("サイズ", labelX, y);
-            // 上辺：十．一小mm
             var lblSizeUe = new Label();
             lblSizeUe.Text = "上辺：";
             lblSizeUe.Location = new System.Drawing.Point(comboX, y + 5);
             lblSizeUe.AutoSize = true;
             this.Controls.Add(lblSizeUe);
 
-            _cmbSizeUeJuu = AddDigitCombo(comboX + 50, y);
-            var lblDot1 = new Label(); lblDot1.Text = "．"; lblDot1.Location = new System.Drawing.Point(comboX + 110, y + 5); lblDot1.AutoSize = true; this.Controls.Add(lblDot1);
-            _cmbSizeUeIchi = AddDigitCombo(comboX + 120, y);
-            _cmbSizeUeKo = AddDigitCombo(comboX + 175, y);
-            var lblMm1 = new Label(); lblMm1.Text = "mm"; lblMm1.Location = new System.Drawing.Point(comboX + 232, y + 5); lblMm1.AutoSize = true; this.Controls.Add(lblMm1);
+            _cmbSizeUeJuu = AddDigitCombo(comboX + 55, y);
+            var lblDot1b = new Label();
+            lblDot1b.Location = new System.Drawing.Point(comboX + 118, y + 5);
+            lblDot1b.AutoSize = true; this.Controls.Add(lblDot1b);
+            _cmbSizeUeIchi = AddDigitCombo(comboX + 130, y);
+            var lblDot1c = new Label(); lblDot1c.Text = "．";
+            lblDot1c.Location = new System.Drawing.Point(comboX + 193, y + 5);
+            lblDot1c.AutoSize = true; this.Controls.Add(lblDot1c);
+            _cmbSizeUeKo = AddDigitCombo(comboX + 230, y);
+            var lblMm1 = new Label(); lblMm1.Text = "mm";
+            lblMm1.Location = new System.Drawing.Point(comboX + 295, y + 5);
+            lblMm1.AutoSize = true; this.Controls.Add(lblMm1);
             y += rowH;
 
             // --- サイズ（下辺） ---
@@ -135,21 +141,31 @@ namespace YumejitateApp
             lblSizeShita.AutoSize = true;
             this.Controls.Add(lblSizeShita);
 
-            _cmbSizeShitaJuu = AddDigitCombo(comboX + 50, y);
-            var lblDot2 = new Label(); lblDot2.Text = "．"; lblDot2.Location = new System.Drawing.Point(comboX + 110, y + 5); lblDot2.AutoSize = true; this.Controls.Add(lblDot2);
-            _cmbSizeShitaIchi = AddDigitCombo(comboX + 120, y);
-            _cmbSizeShitaKo = AddDigitCombo(comboX + 175, y);
-            var lblMm2 = new Label(); lblMm2.Text = "mm"; lblMm2.Location = new System.Drawing.Point(comboX + 232, y + 5); lblMm2.AutoSize = true; this.Controls.Add(lblMm2);
+            _cmbSizeShitaJuu = AddDigitCombo(comboX + 55, y);
+            var lblDot2b = new Label();
+            lblDot2b.Location = new System.Drawing.Point(comboX + 118, y + 5);
+            lblDot2b.AutoSize = true; this.Controls.Add(lblDot2b);
+            _cmbSizeShitaIchi = AddDigitCombo(comboX + 130, y);
+            var lblDot2c = new Label(); lblDot2c.Text = "．";
+            lblDot2c.Location = new System.Drawing.Point(comboX + 193, y + 5);
+            lblDot2c.AutoSize = true; this.Controls.Add(lblDot2c);
+            _cmbSizeShitaKo = AddDigitCombo(comboX + 230, y);
+            var lblMm2 = new Label(); lblMm2.Text = "mm";
+            lblMm2.Location = new System.Drawing.Point(comboX + 295, y + 5);
+            lblMm2.AutoSize = true; this.Controls.Add(lblMm2);
             y += rowH;
 
             // --- リングサイズまたはグレード ---
             AddLabel("リングサイズ\nまたはグレード", labelX, y);
-            // ＃ (リングサイズ十、一)
-            var lblHash = new Label(); lblHash.Text = "＃"; lblHash.Location = new System.Drawing.Point(comboX, y + 5); lblHash.AutoSize = true; this.Controls.Add(lblHash);
+            var lblHash = new Label(); lblHash.Text = "＃";
+            lblHash.Location = new System.Drawing.Point(comboX, y + 5);
+            lblHash.AutoSize = true; this.Controls.Add(lblHash);
             _cmbRingsizeJuu = AddDigitCombo(comboX + 20, y);
-            _cmbRingsizeIchi = AddDigitCombo(comboX + 75, y);
+            _cmbRingsizeIchi = AddDigitCombo(comboX + 80, y);
             // グレード
-            var lblGrade = new Label(); lblGrade.Text = "グレード"; lblGrade.Location = new System.Drawing.Point(comboX + 150, y + 5); lblGrade.AutoSize = true; this.Controls.Add(lblGrade);
+            var lblGrade = new Label(); lblGrade.Text = "グレード";
+            lblGrade.Location = new System.Drawing.Point(comboX + 150, y + 5);
+            lblGrade.AutoSize = true; this.Controls.Add(lblGrade);
             _cmbGrade = AddComboBox(comboX + 230, y, 80);
             y += rowH + 20;
 
@@ -288,7 +304,6 @@ namespace YumejitateApp
                 _cmbGrade.Enabled = false;
 
                 // リングサイズはリングのときのみ有効（初期はリングなので有効）
-                // アイテムの初期値はリングなのでリングサイズを有効化
                 UpdateRingsizeGradeEnabled();
             }
             catch (Exception ex)
@@ -398,10 +413,18 @@ namespace YumejitateApp
                 string sizeWhere = BuildSizeWhere();
                 string ringsizeWhere = BuildRingSizeWhere();
 
-                string strsql = "SELECT * FROM [見本枠検索テーブル] WHERE " +
-                                baseWhere + sizeWhere + ringsizeWhere;
+                string whereClause = baseWhere + sizeWhere + ringsizeWhere;
 
-               
+                // 先頭のANDを除去してWHEREに変換
+                whereClause = whereClause.Trim();
+                if (whereClause.StartsWith("AND "))
+                    whereClause = whereClause.Substring(4);
+
+                string strsql;
+                if (string.IsNullOrWhiteSpace(whereClause))
+                    strsql = "SELECT * FROM [見本枠検索テーブル]";
+                else
+                    strsql = "SELECT * FROM [見本枠検索テーブル] WHERE " + whereClause;
 
                 // --- 1回目の検索（精度高め） ---
                 var dt = AppState.Db.ExecuteQuery(strsql);
@@ -409,10 +432,11 @@ namespace YumejitateApp
                 {
                     // --- 改良ロジック（ヒットなしの場合、サイズ条件を緩める）---
                     // VB6: 見本枠検索-改良①処理
-                    AppState.FlagMihonRev1 = true;
                     string sizeWhereRev1 = BuildSizeWhereRev1();
-                    strsql = "SELECT * FROM [見本枠検索テーブル] WHERE " +
-                             baseWhere + sizeWhereRev1 + ringsizeWhere;
+                    string whereClauseRev1 = (baseWhere + sizeWhereRev1 + ringsizeWhere).Trim();
+                    if (whereClauseRev1.StartsWith("AND "))
+                        whereClauseRev1 = whereClauseRev1.Substring(4);
+                    strsql = "SELECT * FROM [見本枠検索テーブル] WHERE " + whereClauseRev1;
 
                     dt = AppState.Db.ExecuteQuery(strsql);
                     if (dt.Rows.Count == 0)
@@ -426,12 +450,8 @@ namespace YumejitateApp
                     }
                 }
 
-                
                 // --- ワーク検索テーブルへ挿入 ---
-                string insertSql = "INSERT INTO [ワーク検索テーブル] " + strsql.Replace("SELECT *", "SELECT *");
-                // Access SQL: INSERT INTO table SELECT * FROM table WHERE ...
-                string insertWork = "INSERT INTO [ワーク検索テーブル] SELECT * FROM [見本枠検索テーブル] WHERE " +
-                                    baseWhere + (AppState.FlagMihonRev1 ? BuildSizeWhereRev1() : sizeWhere) + ringsizeWhere;
+                string insertWork = "INSERT INTO [ワーク検索テーブル] " + strsql;
                 AppState.Db.ExecuteNonQuery(insertWork);
 
                 // --- 品番の重複排除（totalsize降順で先頭のみ残す）---
@@ -471,7 +491,6 @@ namespace YumejitateApp
             string where = "";
 
             // アイテム条件
-            // VB6: b like '*6*' 等
             string itemCond = GetItemCondition();
             if (!string.IsNullOrEmpty(itemCond))
                 where += itemCond + " ";
@@ -503,29 +522,19 @@ namespace YumejitateApp
 
         private string GetItemCondition()
         {
-            switch (_cmbItem.Text)
-            {
-                case "リング": return "[b] LIKE '*6*'";
-                case "ブローチ": return "[b] LIKE '*8*'";
-                case "ペンダント": return "[b] LIKE '*7*'";
-                case "タイタック": return "[b] LIKE '*1*'";
-                case "ピアス": return "[b] LIKE '*2*'";
-                case "イアリング": return "[b] LIKE '*3*'";
-                case "その他（バチカン）": return "[b] LIKE '*0*'";
-                default: return "";
-            }
+            return ""; // 一時的に条件なし
         }
 
         private string GetStoneShapeCondition()
         {
             switch (_cmbStoneShape.Text)
             {
-                case "ラウンド（円）": return "AND [c] LIKE '*1*'";
-                case "オーバル（楕円）": return "AND [c] LIKE '*2*'";
-                case "ボール（球）": return "AND [c] LIKE '*3*'";
-                case "エメラルド（四角）": return "AND [c] LIKE '*4*'";
-                case "マーキース": return "AND [c] LIKE '*5*'";
-                case "ドロップ": return "AND [c] LIKE '*6*'";
+                case "ラウンド（円）": return "AND [c] LIKE '%1%'";
+                case "オーバル（楕円）": return "AND [c] LIKE '%2%'";
+                case "ボール（球）": return "AND [c] LIKE '%3%'";
+                case "エメラルド（四角）": return "AND [c] LIKE '%4%'";
+                case "マーキース": return "AND [c] LIKE '%5%'";
+                case "ドロップ": return "AND [c] LIKE '%6%'";
                 case "石無し": return "AND [c] = '9'";
                 default: return "";
             }
@@ -535,8 +544,8 @@ namespace YumejitateApp
         {
             switch (_cmbSetStyle.Text)
             {
-                case "爪留め": return "AND [h] LIKE '*1*'";
-                case "爪無し（レール留め等）": return "AND [h] LIKE '*2*'";
+                case "爪留め": return "AND [h] LIKE '%1%'";
+                case "爪無し（レール留め等）": return "AND [h] LIKE '%2%'";
                 default: return ""; // おまかせは条件なし
             }
         }
@@ -545,12 +554,12 @@ namespace YumejitateApp
         {
             switch (_cmbJigane.Text)
             {
-                case "プラチナ": return "AND [d] LIKE '*1*'";
-                case "Ｋ１８ＹＧ": return "AND [d] LIKE '*2*'";
-                case "Ｋ１８ＷＧ": return "AND [d] LIKE '*3*'";
-                case "コンビ": return "AND [d] LIKE '*4*'";
-                case "シルバー": return "AND [d] LIKE '*5*'";
-                case "Ｋ１０": return "AND [d] LIKE '*6*'";
+                case "プラチナ": return "AND [d] LIKE '%1%'";
+                case "Ｋ１８ＹＧ": return "AND [d] LIKE '%2%'";
+                case "Ｋ１８ＷＧ": return "AND [d] LIKE '%3%'";
+                case "コンビ": return "AND [d] LIKE '%4%'";
+                case "シルバー": return "AND [d] LIKE '%5%'";
+                case "Ｋ１０": return "AND [d] LIKE '%6%'";
                 default: return "";
             }
         }
@@ -569,12 +578,6 @@ namespace YumejitateApp
         //   bigsize >= b_size/1.18, <= b_size/0.75
         //   smallsize >= s_size/1.18, <= s_size/0.75
         //   totalsize >= t_size-5, <= t_size+10
-        // 非ボール（式３・AB2で始まる品番）:
-        //   bigsize >= b_size/1.062, <= b_size/0.675
-        //   smallsize >= s_size/1.062, <= s_size/0.675
-        //   totalsize >= (t_size-5)/0.9, <= (t_size+10)/0.9
-        // ボール（式１）:
-        //   bigsize/smallsize/totalsize は非ボールと同じ（AB2分岐なし）
         // ================================================================
         private string BuildSizeWhere()
         {
@@ -586,39 +589,21 @@ namespace YumejitateApp
             double sSize = Math.Min(sizeA, sizeB);
             double tSize = sizeA + sizeB;
 
-            // AppStateに保存（改良ロジック用）
             AppState.MihonRev1Tsize = tSize;
 
-            string wk = "";
-            if (_cmbStoneShape.Text != "ボール（球）")
-            {
-                // 式１ (AB2以外) + 式３ (AB2プレフィックス)
-                wk += "AND (( NOT([a] LIKE 'AB2*') ";
-                wk += "AND [bigsize] >= " + FormatDouble(bSize / 1.18) + " ";
-                wk += "AND [bigsize] <= " + FormatDouble(bSize / 0.75) + " ";
-                wk += "AND [smallsize] >= " + FormatDouble(sSize / 1.18) + " ";
-                wk += "AND [smallsize] <= " + FormatDouble(sSize / 0.75) + " ";
-                wk += "AND [totalsize] >= " + FormatDouble(tSize - 5) + " ";
-                wk += "AND [totalsize] <= " + FormatDouble(tSize + 10) + ") ";
-                wk += "OR ( [a] LIKE 'AB2*' ";
-                wk += "AND [bigsize] >= " + FormatDouble(bSize / 1.062) + " ";
-                wk += "AND [bigsize] <= " + FormatDouble(bSize / 0.675) + " ";
-                wk += "AND [smallsize] >= " + FormatDouble(sSize / 1.062) + " ";
-                wk += "AND [smallsize] <= " + FormatDouble(sSize / 0.675) + " ";
-                wk += "AND [totalsize] >= " + FormatDouble((tSize - 5) / 0.9) + " ";
-                wk += "AND [totalsize] <= " + FormatDouble((tSize + 10) / 0.9) + ")) ";
-            }
-            else
-            {
-                // ボール（球）: AB2分岐なし（式１のみ）
-                wk += "AND [bigsize] >= " + FormatDouble(bSize / 1.18) + " ";
-                wk += "AND [bigsize] <= " + FormatDouble(bSize / 0.75) + " ";
-                wk += "AND [smallsize] >= " + FormatDouble(sSize / 1.18) + " ";
-                wk += "AND [smallsize] <= " + FormatDouble(sSize / 0.75) + " ";
-                wk += "AND [totalsize] >= " + FormatDouble(tSize - 5) + " ";
-                wk += "AND [totalsize] <= " + FormatDouble(tSize + 10) + " ";
-            }
-            return wk;
+            int bigLow = (int)Math.Round(bSize / 1.18);
+            int bigHigh = (int)Math.Round(bSize / 0.75);
+            int smlLow = (int)Math.Round(sSize / 1.18);
+            int smlHigh = (int)Math.Round(sSize / 0.75);
+            int totLow = (int)Math.Round(tSize - 5);
+            int totHigh = (int)Math.Round(tSize + 10);
+
+            return "AND [bigsize] >= " + bigLow +
+                   " AND [bigsize] <= " + bigHigh +
+                   " AND [smallsize] >= " + smlLow +
+                   " AND [smallsize] <= " + smlHigh +
+                   " AND [totalsize] >= " + totLow +
+                   " AND [totalsize] <= " + totHigh + " ";
         }
 
         // ================================================================
@@ -637,38 +622,11 @@ namespace YumejitateApp
             double tSize = sizeA + sizeB;
             AppState.MihonRev1Tsize = tSize;
 
-            string wk = "";
-            if (_cmbStoneShape.Text != "ボール（球）")
-            {
-                // 中石セットスタイルによって分岐（VB6の改良ロジック）
-                if (_cmbSetStyle.Text == "爪無し（レール留め等）")
-                {
-                    // 式２・式４ → totalsize範囲のみ
-                    wk += "AND (( NOT([a] LIKE 'AB2*') ";
-                    wk += "AND [totalsize] >= " + FormatDouble(tSize / 1.3) + " ";
-                    wk += "AND [totalsize] <= " + FormatDouble(tSize) + ") ";
-                    wk += "OR ( [a] LIKE 'AB2*' ";
-                    wk += "AND [totalsize] >= " + FormatDouble(tSize / 1.3) + " ";
-                    wk += "AND [totalsize] <= " + FormatDouble(tSize) + ")) ";
-                }
-                else
-                {
-                    // 式１・式３ → totalsize範囲のみ（緩め）
-                    wk += "AND (( NOT([a] LIKE 'AB2*') ";
-                    wk += "AND [totalsize] >= " + FormatDouble(tSize / 1.3) + " ";
-                    wk += "AND [totalsize] <= " + FormatDouble(tSize) + ") ";
-                    wk += "OR ( [a] LIKE 'AB2*' ";
-                    wk += "AND [totalsize] >= " + FormatDouble(tSize / 1.3) + " ";
-                    wk += "AND [totalsize] <= " + FormatDouble(tSize) + ")) ";
-                }
-            }
-            else
-            {
-                // ボール: totalsize のみ
-                wk += "AND [totalsize] >= " + FormatDouble(tSize / 1.3) + " ";
-                wk += "AND [totalsize] <= " + FormatDouble(tSize) + " ";
-            }
-            return wk;
+            int totLow = (int)Math.Round(tSize / 1.3);
+            int totHigh = (int)Math.Round(tSize);
+
+            return "AND [totalsize] >= " + totLow +
+                   " AND [totalsize] <= " + totHigh + " ";
         }
 
         // ================================================================
@@ -694,31 +652,23 @@ namespace YumejitateApp
         // ================================================================
         private void RemoveDuplicateHinban()
         {
-            // totalsize降順で取得し、同じ品番が連続したらindexを記録して削除
             var dtWk = AppState.Db.ExecuteQuery(
                 "SELECT * FROM [ワーク検索テーブル] ORDER BY [a], [totalsize] DESC");
 
             string prevHinban = "";
-            var indexesToDelete = new System.Collections.Generic.List<string>();
-
             foreach (DataRow row in dtWk.Rows)
             {
                 string curHinban = row["a"].ToString();
-                if (string.Compare(curHinban, prevHinban, StringComparison.OrdinalIgnoreCase) == 0)
+                if (curHinban == prevHinban)
                 {
-                    // 同品番の2件目以降は削除対象
-                    indexesToDelete.Add(row["index"].ToString());
+                    // 同品番の2件目以降は削除
+                    AppState.Db.ExecuteNonQuery(
+                        "DELETE FROM [ワーク検索テーブル] WHERE [index] = " + row["index"]);
                 }
                 else
                 {
                     prevHinban = curHinban;
                 }
-            }
-
-            foreach (string idx in indexesToDelete)
-            {
-                AppState.Db.ExecuteNonQuery(
-                    "DELETE FROM [ワーク検索テーブル] WHERE [index] = " + idx);
             }
         }
 
@@ -782,7 +732,7 @@ namespace YumejitateApp
         // ================================================================
         private string FormatDouble(double value)
         {
-            return value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            return ((int)Math.Round(value)).ToString();
         }
     }
 
