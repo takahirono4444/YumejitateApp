@@ -427,6 +427,8 @@ namespace YumejitateApp
             // [7] 検索テーブルのflag_movieを更新
             UpdateSearchTable();
 
+            UpdateSearchTableSizes();
+
             // [8] 見本枠検索テーブルのflag_movieを更新
             UpdateWakuSearchTable();
 
@@ -937,6 +939,84 @@ namespace YumejitateApp
             catch
             {
                 // flag_movieフィールドが存在しない場合は無視
+            }
+        }
+
+        /// <summary>
+        /// 検索テーブルのbigsize/smallsize/totalsize・価格を更新する
+        /// UpdateWakuSearchTable と同等の処理を検索テーブルに適用
+        /// </summary>
+        private void UpdateSearchTableSizes()
+        {
+            try
+            {
+                // 掛け率テーブルから掛け率を取得
+                var dtKake = AppState.Db.ExecuteQuery("SELECT * FROM [掛け率テーブル]");
+                if (dtKake.Rows.Count == 0) return;
+                double dblKake = Convert.ToDouble(dtKake.Rows[0]["掛け率1"]) / 10.0;
+
+                // 検索テーブルを1件ずつ更新
+                var dtSearch = AppState.Db.ExecuteQuery("SELECT * FROM [検索テーブル]");
+
+                foreach (DataRow row in dtSearch.Rows)
+                {
+                    // 加工コードから掛け率を取得
+                    string vCode = row["v"].ToString();
+                    var dtKakou = AppState.Db.ExecuteQuery(
+                        "SELECT * FROM [加工コード] WHERE [コード] = " + vCode);
+                    if (dtKakou.Rows.Count == 0) continue;
+                    double kakouKake = Convert.ToDouble(dtKakou.Rows[0]["掛け率"]);
+
+                    // 販売価格計算
+                    double q = Convert.ToDouble(row["q"]);
+                    double dblPrice = dblKake * q * kakouKake;
+                    double qKakou = q * kakouKake;
+                    double dblPriceMax;
+                    if (qKakou <= 30000) dblPriceMax = qKakou * dblKake * 1.3;
+                    else if (qKakou <= 70000) dblPriceMax = qKakou * dblKake * 1.25;
+                    else dblPriceMax = qKakou * dblKake * 1.2;
+
+                    // 1000円単位切り上げ
+                    long wkLong = (long)(dblPrice / 1000) * 1000;
+                    if (wkLong < dblPrice) dblPrice = wkLong + 1000;
+                    wkLong = (long)(dblPriceMax / 1000) * 1000;
+                    if (wkLong < dblPriceMax) dblPriceMax = wkLong + 1000;
+
+                    // bigsize/smallsize/totalsize計算（l列・m列から）
+                    int intBig, intSmall, intTotal;
+                    string lVal = row["l"].ToString();
+                    string mVal = row["m"].ToString();
+
+                    if (lVal == "XXX" || mVal == "XXX")
+                    {
+                        intBig = intSmall = intTotal = 9999;
+                    }
+                    else
+                    {
+                        int lInt = 0, mInt = 0;
+                        int.TryParse(lVal, out lInt);
+                        int.TryParse(mVal, out mInt);
+                        if (lInt < mInt) { intBig = mInt; intSmall = lInt; }
+                        else { intBig = lInt; intSmall = mInt; }
+                        intTotal = intBig + intSmall;
+                    }
+
+                    // 更新
+                    AppState.Db.ExecuteNonQuery(
+                        "UPDATE [検索テーブル] SET " +
+                        "[price]=?, [price_max]=?, [bigsize]=?, [smallsize]=?, [totalsize]=? " +
+                        "WHERE [index]=?",
+                        new OleDbParameter("p1", (int)dblPrice),
+                        new OleDbParameter("p2", (int)dblPriceMax),
+                        new OleDbParameter("p3", intBig),
+                        new OleDbParameter("p4", intSmall),
+                        new OleDbParameter("p5", intTotal),
+                        new OleDbParameter("p6", row["index"]));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("UpdateSearchTableSizes エラー: " + ex.Message, ex);
             }
         }
 
