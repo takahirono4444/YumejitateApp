@@ -3,11 +3,7 @@
     using System;
     using System.Windows.Forms;
 
-    public class FormSizanaoshi : Form { }
-    public class FormIshidome : Form { }
-    public class FormShintsume : Form { }
-    public class FormHenkei : Form { }
-    public class FormBrandNew : Form { }
+    
     public class FormMovie : Form { }
     public class FormSaveCamera : Form
     {

@@ -287,9 +287,9 @@ namespace YumejitateApp
             {
                 Text = "0",
                 Font = resultFont,
-                BackColor = SystemColors.Window,
+                BackColor = Color.FromArgb(0xD8, 0xFF, 0xFF),
                 ForeColor = SystemColors.WindowText,
-                BorderStyle = BorderStyle.Fixed3D,
+                BorderStyle = BorderStyle.FixedSingle,
                 Size = new Size(220, 28),
                 TextAlign = ContentAlignment.MiddleRight,
                 Location = new Point(0, 0),
@@ -498,10 +498,11 @@ namespace YumejitateApp
             //   [千年][百年][十年][一年]年 [十月][一月]月 [十日][一日]日
             //   PT1000: [万][千][四][十][一]/g  K24: [万][千][四][十][一]/g
             // ----------------------------------------------------------------
-            int bx = lx; // 日付入力開始X
+            // ----------------------------------------------------------------
+            // [行B1] 日付のみ
+            // ----------------------------------------------------------------
+            int bx = lx;
             int by = y;
-
-            // 日付コンボ
             _cmbSennen.SetBounds(bx, by, 50, 27);
             _cmbHyakunen.SetBounds(bx + 52, by, 50, 27);
             _cmbJuNen.SetBounds(bx + 104, by, 50, 27);
@@ -514,27 +515,31 @@ namespace YumejitateApp
             _cmbIchiNichi.SetBounds(bx + 432, by, 50, 27);
             _lblNichi.SetBounds(bx + 484, by + 3, 30, 22);
 
-            // PT1000 入力
-            int px = lx + 530;
-            _lblPt1000Label.SetBounds(px - 80, by + 3, 80, 22);
+            y += dy;
+
+            // ----------------------------------------------------------------
+            // [行B2] PT1000 / K24 相場入力（独立した行）
+            // ----------------------------------------------------------------
+            by = y;
+            int px = lx + 85;
+            _lblPt1000Label.SetBounds(lx, by + 3, 80, 22);
             _cmbPtMan.SetBounds(px, by, 50, 27);
             _cmbPtSen.SetBounds(px + 52, by, 50, 27);
             _cmbPtShi.SetBounds(px + 104, by, 50, 27);
-            _lblPtDot.SetBounds(px + 155, by + 3, 20, 22);
-            _cmbPtJu.SetBounds(px + 156, by, 50, 27);
-            _cmbPtIchi.SetBounds(px + 208, by, 50, 27);
-            _lblPerGram.SetBounds(px + 261, by + 3, 35, 22);
+            _lblPtDot.SetBounds(px + 158, by + 3, 20, 22);
+            _cmbPtJu.SetBounds(px + 182, by, 50, 27);
+            _cmbPtIchi.SetBounds(px + 234, by, 50, 27);
+            _lblPerGram.SetBounds(px + 288, by + 3, 35, 22);
 
-            // K24 入力
-            int kx = px + 300;
-            _lblK24Label.SetBounds(kx - 50, by + 3, 50, 22);
+            int kx = px + 380;
+            _lblK24Label.SetBounds(kx - 45, by + 3, 45, 22);
             _cmbK24Man.SetBounds(kx, by, 50, 27);
             _cmbK24Sen.SetBounds(kx + 52, by, 50, 27);
             _cmbK24Shi.SetBounds(kx + 104, by, 50, 27);
-            _lblK24Dot.SetBounds(kx + 155, by + 3, 20, 22);
-            _cmbK24Ju.SetBounds(kx + 156, by, 50, 27);
-            _cmbK24Ichi.SetBounds(kx + 208, by, 50, 27);
-            _lblPerGram2.SetBounds(kx + 261, by + 3, 35, 22);
+            _lblK24Dot.SetBounds(kx + 158, by + 3, 20, 22);
+            _cmbK24Ju.SetBounds(kx + 182, by, 50, 27);
+            _cmbK24Ichi.SetBounds(kx + 234, by, 50, 27);
+            _lblPerGram2.SetBounds(kx + 288, by + 3, 35, 22);
 
             y += dy;
 

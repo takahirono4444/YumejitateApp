@@ -96,6 +96,9 @@
     <Compile Include="FormRepair.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormRepairSubForms.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormSearch.cs">
       <SubType>Form</SubType>
     </Compile>

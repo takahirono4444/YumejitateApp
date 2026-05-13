@@ -115,18 +115,18 @@ namespace YumejitateApp
             var cmbSize = new Size(50, 27);
 
             _cmbSennen = MakeDigitCombo(new Point(16, 128), cmbSize);
-            _cmbHyakuNen = MakeDigitCombo(new Point(68, 128), cmbSize);
-            _cmbJuNen = MakeDigitCombo(new Point(120, 128), cmbSize);
-            _cmbIchiNen = MakeDigitCombo(new Point(172, 128), cmbSize);
+            _cmbHyakuNen = MakeDigitCombo(new Point(76, 128), cmbSize);
+            _cmbJuNen = MakeDigitCombo(new Point(136, 128), cmbSize);
+            _cmbIchiNen = MakeDigitCombo(new Point(196, 128), cmbSize);
 
             var lblNen = new Label { Text = "年", Font = fntNormal, BackColor = Color.Transparent, AutoSize = true, Location = new Point(224, 132) };
 
-            _cmbJuTsuki = MakeDigitCombo(new Point(250, 128), cmbSize);
-            _cmbIchiTsuki = MakeDigitCombo(new Point(302, 128), cmbSize);
+            _cmbJuTsuki = MakeDigitCombo(new Point(296, 128), cmbSize);
+            _cmbIchiTsuki = MakeDigitCombo(new Point(356, 128), cmbSize);
             var lblTsuki = new Label { Text = "月", Font = fntNormal, BackColor = Color.Transparent, AutoSize = true, Location = new Point(354, 132) };
 
-            _cmbJuNichi = MakeDigitCombo(new Point(380, 128), cmbSize);
-            _cmbIchiNichi = MakeDigitCombo(new Point(432, 128), cmbSize);
+            _cmbJuNichi = MakeDigitCombo(new Point(456, 128), cmbSize);
+            _cmbIchiNichi = MakeDigitCombo(new Point(516, 128), cmbSize);
             var lblNichi = new Label { Text = "日", Font = fntNormal, BackColor = Color.Transparent, AutoSize = true, Location = new Point(484, 132) };
 
             // ================================================================
@@ -142,7 +142,7 @@ namespace YumejitateApp
             };
 
             var lblPt1000Ttl = new Label { Text = "PT１０００", Font = fntNormal, BackColor = Color.Transparent, AutoSize = true, Location = new Point(10, 20) };
-            var lblYen1 = new Label { Text = "¥", Font = fntNormal, BackColor = Color.Transparent, AutoSize = true, Location = new Point(10, 48) };
+            var lblYen1 = new Label { Text = "¥", Font = fntNormal, BackColor = Color.Transparent, AutoSize = true, Location = new Point(5, 48) };
             _lblPt1000 = new Label
             {
                 Text = "0",
@@ -156,7 +156,7 @@ namespace YumejitateApp
             var lblPtUnit = new Label { Text = "／ｇ", Font = fntNormal, BackColor = Color.Transparent, AutoSize = true, Location = new Point(178, 48) };
 
             var lblK24Ttl = new Label { Text = "Ｋ２４", Font = fntNormal, BackColor = Color.Transparent, AutoSize = true, Location = new Point(230, 20) };
-            var lblYen2 = new Label { Text = "¥", Font = fntNormal, BackColor = Color.Transparent, AutoSize = true, Location = new Point(230, 48) };
+            var lblYen2 = new Label { Text = "¥", Font = fntNormal, BackColor = Color.Transparent, AutoSize = true, Location = new Point(225, 48) };
             _lblK24 = new Label
             {
                 Text = "0",
@@ -228,7 +228,7 @@ namespace YumejitateApp
                 TextAlign = ContentAlignment.MiddleRight,
                 BackColor = SystemColors.Window,
                 BorderStyle = BorderStyle.FixedSingle,
-                Location = new Point(1062, 192),
+                Location = new Point(1115, 192),
                 Size = new Size(115, 27),
             };
 
@@ -274,7 +274,7 @@ namespace YumejitateApp
                 TextAlign = ContentAlignment.MiddleRight,
                 BackColor = SystemColors.Window,
                 BorderStyle = BorderStyle.FixedSingle,
-                Location = new Point(680, 452),
+                Location = new Point(710, 452),
                 Size = new Size(97, 27),
             };
 
@@ -286,7 +286,7 @@ namespace YumejitateApp
                 AutoSize = true,
                 Location = new Point(352, 456),
             };
-            var lblYen3 = new Label { Text = "¥", Font = fntNormal, BackColor = Color.Transparent, AutoSize = true, Location = new Point(336, 490) };
+            var lblYen3 = new Label { Text = "¥", Font = fntNormal, BackColor = Color.Transparent, AutoSize = true, Location = new Point(331, 490) };
             _lblGokeiSeikyu = new Label
             {
                 Text = "0",
